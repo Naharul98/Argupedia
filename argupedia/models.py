@@ -19,7 +19,7 @@ class Entry(MPTTModel):
     parent = TreeForeignKey("self", null=True, blank=True, on_delete=models.CASCADE, related_name="children")
     content = models.TextField(max_length=4000, default="", help_text="")
     content_formatted = models.TextField(default="")
-    title = models.TextField(max_length=100, default="", help_text="")
+    title = models.TextField(max_length=100, default="", help_text="", blank=True)
     upvotes = models.ManyToManyField(User, blank=True, related_name="upvotes")
     downvotes = models.ManyToManyField(User, blank=True, related_name="downvotes")
     created_date = models.DateTimeField(default=timezone.now)

@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render
 import re
 from datetime import timedelta
@@ -6,6 +7,9 @@ from django.views import View
 from .models import Entry
 from django.db.models import Count
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.views.generic.detail import DetailView
+from django.contrib.auth.models import User
+from django.shortcuts import redirect, render, get_object_or_404
 
 # Create your views here.
 class HomeView(View):
@@ -45,3 +49,36 @@ class PostsDetailView(View):
         root_nodes = subtree.get_descendants(include_self=True)
         root_nodes = root_nodes.annotate(overall_votes=(Count("upvotes") - Count("downvotes"))).order_by("-overall_votes")
         return render(request, "post_detail.html", {"entries": root_nodes, "title" : title})
+
+class MyDiscussionsView(DetailView):
+    model = User
+    template_name = 'home.html'
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        username = self.kwargs.get("username")
+        if not username:
+            return super().get_object(queryset)
+        else:
+            username = username.lower()
+        queryset = queryset.filter(username=username)
+        try:
+            obj = queryset.get()
+        except queryset.model.DoesNotExist:
+            raise Http404("something went wrong")
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_entries = Entry.objects.filter(user=self.get_object().pk)
+        last_discussions = []
+
+        for entry in user_entries:
+            if any([entry.pk == discussion.pk for discussion in last_discussions]):
+                continue
+            for node in list(entry.get_family()):
+                last_discussions.append(node)
+        context["entries"] = last_discussions
+        return context
+
