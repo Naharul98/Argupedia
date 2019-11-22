@@ -21,7 +21,12 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="ADD_SUFFIX_TO_CHERRY_PICKS_OF_PUBLISHED_COMMITS" value="false" />
+    <option name="PREVIEW_PUSH_ON_COMMIT_AND_PUSH" value="false" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+    <option name="WARN_ABOUT_CRLF" value="false" />
+    <option name="WARN_ABOUT_DETACHED_HEAD" value="false" />
   </component>
   <component name="ProjectId" id="1TvYwZTcZQDE1wbmh3NDbc72RcR" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -85,7 +90,7 @@
       <option name="presentableId" value="Default" />
       <updated>1574342275984</updated>
       <workItem from="1574342280405" duration="13860000" />
-      <workItem from="1574425527988" duration="17153000" />
+      <workItem from="1574425527988" duration="17765000" />
     </task>
     <servers />
   </component>
