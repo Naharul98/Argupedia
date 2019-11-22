@@ -31,6 +31,7 @@
         {% if not entries %}
             <h6>Oops. There are no discussions to show.</h6>
         {% endif %}
+    <!-- mttp tree start -->
         {% recursetree entries %}
             {% if node.user.pk == user.pk %}
                 <li class="usernode">
@@ -47,6 +48,8 @@
                 <a href="#userdetailview" style="margin-left: 5px; font-size: 14px;"><strong>{{node.user.username }}</strong></a>
                 <small><em>Votes:</em></small>
                 <strong class="entry-points" data-id="{{node.pk}}">{{ node.votes_sum }}</strong>
+
+
                 {% if user.is_authenticated %}
                     {% if not node.deleted %}
                         <button class="upvote {% if user in node.upvotes.all %}user-upvoted{% endif %}" data-id="{{node.pk}}">&#43;</button>
@@ -58,9 +61,17 @@
                         <a href="#" class="deleteButton" value="{{node.pk}}" style="font-size: 12px; color: red;">delete</a>
                     {% endif %}
                 {% endif %}
+
+
+            
             </p>
             <div id="content{{node.pk}}" class="entry-content {% if node.deleted %}deleted text-muted{% endif %}" value="{{node.pk}}" style="{% if entry.pk == node.pk %}background-color: yellow;{% endif %}">{{node.content_formatted|safe }}</div>
         </div>
+
+        <!-- importatnt shit-->
+        {% comment %}
+
+
         {% if node.has_hidden_children %}
             <a style="margin-left: 15px; font-size: 12px; background-color: lightblue; color: white;" href="#expanddiscussion">Continue into this discussion -></a>
         {% endif %}
@@ -72,13 +83,17 @@
                 {{ children }}
             </ul>
         {% endif %}
+
+        {% endcomment %}
+
         </li>
             {% if node.is_root_node %}
                 <hr>
             {% endif %}
         {% endrecursetree %}
+    </ul>
 
-        <div class="pagination">
+    <div class="pagination">
     <span class="step-links">
         {% if entries.has_previous %}
             <a href="?page=1">&laquo; first</a>
@@ -94,6 +109,6 @@
             <a href="?page={{ entries.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
     </span>
-        </div>
+    </div>
 
 {% endblock %}
