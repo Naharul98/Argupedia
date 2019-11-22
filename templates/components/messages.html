@@ -1,0 +1,15 @@
+{% if errors.count > 0 %}
+    {% for obj in errors %}
+        <div class="alert alert-danger" id="alert">
+            {{obj}}
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% if success.count > 0 %}
+    {% for obj in success %}
+        <div class="alert alert-success" id="alert">
+            {{ obj }}
+        </div>
+    {% endfor %}
+{% endif %}
