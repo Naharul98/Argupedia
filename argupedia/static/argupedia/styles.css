@@ -52,7 +52,7 @@
 }
 
 .downvote.user-downvoted {
-  color: red;
+  color: lightcoral;
   background-color: rgba(119, 0, 0, 0.2);
     border: none;
 }

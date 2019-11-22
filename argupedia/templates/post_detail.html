@@ -3,7 +3,7 @@
 {% block content %}
 
     <div class="container-fluid">
-        <section class="search-banner bg-light text-black py-4 bg-white text-dark" id="banner">
+        <section class="search-banner bg-light text-black pt-3 bg-white text-dark" id="banner">
             <div class="row" >
                 <div class="col-lg-7">
                     <div class="row ml-2" >
@@ -59,15 +59,12 @@
                         <a href="#" class="deleteButton" value="{{node.pk}}" style="font-size: 12px; color: red;">delete</a>
                     {% endif %}
                 {% endif %}
-
-
-
             </p>
             <div id="content{{node.pk}}" class="entry-content {% if node.deleted %}deleted text-muted{% endif %}" value="{{node.pk}}" style="{% if entry.pk == node.pk %}background-color: yellow;{% endif %}">{{node.content_formatted|safe }}</div>
         </div>
 
         {% if node.has_hidden_children %}
-            <a style="margin-left: 15px; font-size: 12px; background-color: lightblue; color: white;" href="#expanddiscussion">Continue into this discussion -></a>
+            <a style="margin-left: 15px; font-size: 12px; background-color: lightblue; color: white;" href="{% url 'posts-detail-view' node.pk %}">Continue into this discussion -></a>
         {% endif %}
         {% if not node.is_leaf_node %}
             {% if node.is_root_node %}

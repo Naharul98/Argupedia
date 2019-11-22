@@ -7,12 +7,14 @@
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
             </li>
+            {% if user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link" href="#">Create Post</a>
+                <a class="nav-link" href="#">My Discussions</a>
             </li>
+            {% endif %}
         </ul>
         {% if user.is_authenticated %}
             <ul class="inline my-2 my-lg-0" style="list-style-type: none;">
