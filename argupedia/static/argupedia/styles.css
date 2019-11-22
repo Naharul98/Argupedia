@@ -124,20 +124,3 @@
 .entry-content pre code {
   background-color: rgb(246, 246, 246);
 }
-/* ----------------------- */
-
-.ranking {
-  align-self: center;
-}
-
-.ranking-list:nth-child(1) {
-  font-size: 28px;
-}
-
-.ranking-list:nth-child(2) {
-  font-size: 24px;
-}
-
-.ranking-list:nth-child(3) {
-  font-size: 20px;
-}

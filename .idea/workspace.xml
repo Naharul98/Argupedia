@@ -14,9 +14,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
         <option value="CSS File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -34,7 +34,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -90,7 +90,9 @@
       <option name="presentableId" value="Default" />
       <updated>1574342275984</updated>
       <workItem from="1574342280405" duration="13860000" />
-      <workItem from="1574425527988" duration="18628000" />
+      <workItem from="1574425527988" duration="24256000" />
+      <workItem from="1574453201091" duration="136000" />
+      <workItem from="1574453367923" duration="2446000" />
     </task>
     <servers />
   </component>
@@ -102,7 +104,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
