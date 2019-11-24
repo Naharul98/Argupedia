@@ -13,6 +13,19 @@ from django.utils.html import format_html
 from mptt.models import MPTTModel, TreeForeignKey
 
 
+class Scheme(models.Model):
+    scheme_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.scheme_name
+
+class SchemeStructure(models.Model):
+    ORDERING = [('1', '1'),('2', '2'),('3', '3'),('4', '4'),]
+    scheme = models.ForeignKey(Scheme, on_delete=models.CASCADE, related_name="scheme")
+    section_title = models.CharField(max_length=100)
+    ordering = models.CharField(max_length=50,choices=ORDERING)
+    is_conclusion = models.BooleanField()
+
 
 class Entry(MPTTModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author")

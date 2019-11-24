@@ -18,7 +18,7 @@
                 {% if user.is_authenticated %}
                     <div class="col-lg-4 text-right">
                         <div class="btn-group">
-                            <a href="#" class="btn btn-dark btn-md active">Create a Debate Topic</a>
+                            <a href="{% url 'choose-scheme-view' is_create='1' %}" class="btn btn-dark btn-md active">Create a Debate Topic</a>
                         </div>
                     </div>
                 {% endif %}

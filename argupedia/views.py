@@ -5,6 +5,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.views import View
 from .models import Entry
+from .models import Scheme
 from django.db.models import Count
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.views.generic.detail import DetailView
@@ -82,3 +83,12 @@ class MyDiscussionsView(DetailView):
         context["entries"] = last_discussions
         return context
 
+class ChooseSchemeView(View):
+
+    def get(self, request, is_create):
+        all_schemes = Scheme.objects.all()
+        for x in all_schemes:
+            print(x.pk)
+
+
+        return render(request, "choose_scheme.html", {"entries": ''})
