@@ -6,6 +6,7 @@ from django.conf import settings
 from django.views import View
 from .models import Entry
 from .models import Scheme
+from .models import SchemeStructure
 from django.db.models import Count
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.views.generic.detail import DetailView
@@ -91,4 +92,9 @@ class ChooseSchemeView(View):
 
 class CreatePost(View):
     def get(self, request, pk_scheme):
-        return render(request, "create_post.html", {"schemes": ''})
+        argumentation_scheme = SchemeStructure.objects.filter(scheme=pk_scheme).order_by('ordering')
+        return render(request, "create_post.html", {"scheme_structure": argumentation_scheme, "scheme_id": pk_scheme})
+
+    def post(self, request, pk_scheme):
+        print(request.POST.get("In Situation", "xxx"))
+        return render(request, "home.html", {"entries": ''})

@@ -49,7 +49,7 @@
                 <small><em>Votes:</em></small>
                 <strong class="entry-points" data-id="{{node.pk}}">{{ node.votes_sum }}</strong>
             </p>
-            <div id="content{{node.pk}}" class="entry-content {% if node.deleted %}deleted text-muted{% endif %}" value="{{node.pk}}" style="{% if entry.pk == node.pk %}background-color: yellow;{% endif %}">{{node.content_formatted|safe }}</div>
+            <div id="content{{node.pk}}" class="entry-content {% if node.deleted %}deleted text-muted{% endif %}" value="{{node.pk}}" style="{% if entry.pk == node.pk %}background-color: yellow;{% endif %}">{{ node.content_formatted|safe }}</div>
         </div>
         </li>
             {% if node.is_root_node %}

@@ -1,12 +1,32 @@
 {% extends 'base.html' %}
 {% block title %}Choose Debate Topic{% endblock %}
 {% block content %}
-    <div class="container-fluid">
-        <div class="row justify-content-center my-3">
-            <h3>Create Debate Topic</h3>
+
+    <div class="container center_div">
+        <div class="col-md-12 centered" style=" padding-bottom : 40px">
+            <div class="form-area">
+
+                <form action="{% url 'create-post-view' pk_scheme=scheme_id %}" method="post">
+                    {% csrf_token %}
+                    <div class="container center_div pl-3">
+                        <h3 style="margin-bottom: 15px; margin-top: 10px;text-align: center;">Provide your argument</h3>
+                        <label for="text"><strong>Topic Title</strong></label>
+                        <div class="col-md-12">
+                           <input type="text" class="form-control" id="post_title" name="post_title" placeholder="Title" value="" required>
+                        </div>
+                        {% for structure in scheme_structure %}
+                        <div class="form-group">
+                            <label for="text"><strong>{{ structure.section_title }}:</strong></label>
+                            <div class="col-md-12">
+                                <textarea class="form-control" name="{{ structure.section_title }}" id="{{ structure.section_title }}" rows="2" placeholder="{{ structure.section_description }}" required></textarea>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <input type="submit" name="submit" class="btn btn-md active" style="background-color:#2d3246; color :white; width:120px; padding-left:10px;padding-bottom:5px;margin-left:400px;" role="button" aria-pressed="true" value="Submit"/>
+                        <a href="{% url 'home' %}" class="btn btn-md active" style="background-color:#2d3246; color :white; width:120px; padding-left:10px;padding-bottom:5px;">Cancel</a>
+                    </div>
+                </form>
+            </div>
         </div>
-
-
-
     </div>
 {% endblock %}

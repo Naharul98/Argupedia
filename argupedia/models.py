@@ -20,11 +20,12 @@ class Scheme(models.Model):
         return self.scheme_name
 
 class SchemeStructure(models.Model):
-    ORDERING = [('1', '1'),('2', '2'),('3', '3'),('4', '4'),]
+    ORDERING = [('1', '1'),('2', '2'),('3', '3'),('4', '4'),('5', '5'),('6', '6'),('7', '7'),('8', '8'),]
     scheme = models.ForeignKey(Scheme, on_delete=models.CASCADE, related_name="scheme")
     section_title = models.CharField(max_length=100)
     ordering = models.CharField(max_length=50,choices=ORDERING)
     is_conclusion = models.BooleanField()
+    section_description = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.section_title
@@ -60,7 +61,9 @@ class Entry(MPTTModel):
         self.content_formatted = self.content
         # Clean and format content
         self.content_formatted = bleach.clean(markdown.markdown(self.content_formatted, extensions=["extra"]),settings.MARKDOWN_TAGS,settings.MARKDOWN_ATTRS,)
+
         self.content = bleach.clean(self.content, settings.MARKDOWN_TAGS, settings.MARKDOWN_ATTRS)
+
 
     def save(self, *args, **kwargs):
         created = True if not self.pk else False
