@@ -6,6 +6,7 @@ from .views import HomeView
 from .views import PostsDetailView
 from .views import MyDiscussionsView
 from .views import ChooseSchemeView
+from .views import CreatePost
 
 
 logged_users_redirect = user_passes_test(lambda u: u.is_anonymous, "/")
@@ -16,5 +17,6 @@ urlpatterns = [
     path("posts/mydiscussions/<str:username>/", MyDiscussionsView.as_view(), name="my-discussions-view"),
     path("posts/create/choose_scheme/<str:is_create>/", ChooseSchemeView.as_view(), name="choose-scheme-view"),
 
+    path("posts/create/input_argument/<str:pk_scheme>/", CreatePost.as_view(), name="create-post-view"),
 
 ]

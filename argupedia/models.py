@@ -26,6 +26,9 @@ class SchemeStructure(models.Model):
     ordering = models.CharField(max_length=50,choices=ORDERING)
     is_conclusion = models.BooleanField()
 
+    def __str__(self):
+        return self.section_title
+
 
 class Entry(MPTTModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author")

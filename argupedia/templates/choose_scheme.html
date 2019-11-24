@@ -5,17 +5,11 @@
         <div class="row justify-content-center my-3">
             <h3>Select Argumentation Scheme</h3>
         </div>
-
-
-        <div class="row justify-content-center">
-            <a href="#" class="btn btn-dark btn-lg active mb-4">Create a Debate Topic</a>
-
-        </div>
-        <div class="row justify-content-center">
-            <a href="#" class="btn btn-dark btn-lg active mb-4">Create a Debate Topic</a>
-
-        </div>
-
-
+        {% for scheme in schemes %}
+            <div class="row justify-content-center">
+                <a href="{% if is_create == '1' %} {% url 'create-post-view' pk_scheme=scheme.pk %} {% else %} # {% endif %}"
+                   class="btn btn-dark btn-lg active mb-2">{{ scheme.scheme_name }}</a>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

@@ -84,11 +84,11 @@ class MyDiscussionsView(DetailView):
         return context
 
 class ChooseSchemeView(View):
-
     def get(self, request, is_create):
         all_schemes = Scheme.objects.all()
-        for x in all_schemes:
-            print(x.pk)
+        return render(request, "choose_scheme.html", {"schemes": all_schemes, "is_create": is_create})
 
 
-        return render(request, "choose_scheme.html", {"entries": ''})
+class CreatePost(View):
+    def get(self, request, pk_scheme):
+        return render(request, "create_post.html", {"schemes": ''})
