@@ -33,6 +33,7 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../pacman-cw/pacman-cw" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
@@ -93,7 +94,10 @@
       <workItem from="1574425527988" duration="24256000" />
       <workItem from="1574453201091" duration="136000" />
       <workItem from="1574453367923" duration="9540000" />
-      <workItem from="1574621298701" duration="15294000" />
+      <workItem from="1574621298701" duration="15401000" />
+      <workItem from="1575131439822" duration="321000" />
+      <workItem from="1575133296821" duration="71000" />
+      <workItem from="1575156443608" duration="6968000" />
     </task>
     <servers />
   </component>

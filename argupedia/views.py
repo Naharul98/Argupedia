@@ -96,5 +96,25 @@ class CreatePost(View):
         return render(request, "create_post.html", {"scheme_structure": argumentation_scheme, "scheme_id": pk_scheme})
 
     def post(self, request, pk_scheme):
-        print(request.POST.get("In Situation", "xxx"))
-        return render(request, "home.html", {"entries": ''})
+        argumentation_scheme = SchemeStructure.objects.filter(scheme=pk_scheme).order_by('ordering')
+        stringBuilder = []
+        for tup in argumentation_scheme:
+            stringBuilder.append('**')
+            stringBuilder.append(tup.section_title)
+            stringBuilder.append(':')
+            stringBuilder.append('**')
+            stringBuilder.append('<br>')
+            stringBuilder.append(request.POST.get(tup.section_title, ""))
+            stringBuilder.append('<br>')
+        baldur = ''.join(stringBuilder)
+        entry = Entry(user=request.user, content=baldur, title=request.POST.get('post_title', ""))
+        entry.save()
+        entry.upvotes.add(request.user)
+        return redirect('my-discussions-view', username=request.user.username)
+
+
+class DeletePost(View):
+    def get(self, request, pk_post):
+        Entry.objects.get(id=pk_post).delete()
+        Entry.objects.rebuild()
+        return redirect('my-discussions-view', username=request.user.username)

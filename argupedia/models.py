@@ -61,9 +61,7 @@ class Entry(MPTTModel):
         self.content_formatted = self.content
         # Clean and format content
         self.content_formatted = bleach.clean(markdown.markdown(self.content_formatted, extensions=["extra"]),settings.MARKDOWN_TAGS,settings.MARKDOWN_ATTRS,)
-
         self.content = bleach.clean(self.content, settings.MARKDOWN_TAGS, settings.MARKDOWN_ATTRS)
-
 
     def save(self, *args, **kwargs):
         created = True if not self.pk else False
@@ -73,18 +71,6 @@ class Entry(MPTTModel):
         super().save(*args, **kwargs)
         if created:
             self.upvotes.add(self.user)
-
-    def delete(self, *args, **kwargs):
-        # Create a DeletedEntry object to store data about original entry
-        if not self.deleted:
-            self.create_deleted_entry()
-        if self.has_children:
-            self.deleted = True
-            self.content = "<p><em>deleted</em></p>"
-            self.content_formatted = "<p><em>deleted</em></p>"
-            self.save()
-        else:
-            super().delete(*args, **kwargs)
 
     @cached_property
     def votes_sum(self):
