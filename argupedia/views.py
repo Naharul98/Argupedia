@@ -7,6 +7,7 @@ from django.views import View
 from .models import Entry
 from .models import Scheme
 from .models import SchemeStructure
+from .models import CriticalQuestion
 from django.db.models import Count
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.views.generic.detail import DetailView
@@ -85,9 +86,13 @@ class MyDiscussionsView(DetailView):
         return context
 
 class ChooseSchemeView(View):
-    def get(self, request, is_create):
+    def get(self, request, pk_post):
         all_schemes = Scheme.objects.all()
-        return render(request, "choose_scheme.html", {"schemes": all_schemes, "is_create": is_create})
+        entry = ''
+        if(pk_post != 0):
+            entry = Entry.objects.get(pk=pk_post)
+
+        return render(request, "choose_scheme.html", {"schemes": all_schemes, "pk_post": pk_post, "entry": entry})
 
 
 class CreatePost(View):
@@ -107,14 +112,50 @@ class CreatePost(View):
             stringBuilder.append(request.POST.get(tup.section_title, ""))
             stringBuilder.append('<br>')
         baldur = ''.join(stringBuilder)
-        entry = Entry(user=request.user, content=baldur, title=request.POST.get('post_title', ""))
+        entry = Entry(user=request.user, content=baldur, title=request.POST.get('post_title', ""), scheme_used=Scheme.objects.get(pk=pk_scheme))
         entry.save()
         entry.upvotes.add(request.user)
-        return redirect('my-discussions-view', username=request.user.username)
+        return redirect('posts-detail-view', pk_post=entry.id)
 
 
 class DeletePost(View):
     def get(self, request, pk_post):
         Entry.objects.get(id=pk_post).delete()
         Entry.objects.rebuild()
-        return redirect('my-discussions-view', username=request.user.username)
+        return redirect('home')
+
+
+class CounterPost(View):
+    def get(self, request, pk_scheme, pk_post):
+        argumentation_scheme = SchemeStructure.objects.filter(scheme=pk_scheme).order_by('ordering')
+        attacking = Entry.objects.get(pk=pk_post)
+        criticalQuestions = CriticalQuestion.objects.filter(related_scheme=attacking.scheme_used.id)
+        return render(request, "counter_post.html", {"scheme_structure": argumentation_scheme, "scheme_id": pk_scheme, "entry": Entry.objects.get(pk=pk_post), "critiques": criticalQuestions})
+
+    def post(self, request, pk_scheme, pk_post):
+        argumentation_scheme = SchemeStructure.objects.filter(scheme=pk_scheme).order_by('ordering')
+        stringBuilder = []
+        critique = CriticalQuestion.objects.get(pk=request.POST.get('critique'))
+        stringBuilder.append('Critique Position: *')
+        stringBuilder.append(critique.question)
+        stringBuilder.append('*')
+        stringBuilder.append('<br>')
+        for tup in argumentation_scheme:
+            stringBuilder.append('**')
+            stringBuilder.append(tup.section_title)
+            stringBuilder.append(':')
+            stringBuilder.append('**')
+            stringBuilder.append('<br>')
+            stringBuilder.append(request.POST.get(tup.section_title, ""))
+            stringBuilder.append('<br>')
+        baldur = ''.join(stringBuilder)
+        attacking = Entry.objects.get(pk=pk_post)
+
+        entry = Entry(user=request.user, content=baldur, title=request.POST.get('post_title', ""), scheme_used=Scheme.objects.get(pk=pk_scheme), critical_question=critique, parent=attacking)
+        entry.save()
+        entry.upvotes.add(request.user)
+        return redirect('posts-detail-view', pk_post=pk_post)
+
+
+
+

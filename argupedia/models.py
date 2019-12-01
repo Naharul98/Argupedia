@@ -15,7 +15,6 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 class Scheme(models.Model):
     scheme_name = models.CharField(max_length=100)
-
     def __str__(self):
         return self.scheme_name
 
@@ -24,12 +23,18 @@ class SchemeStructure(models.Model):
     scheme = models.ForeignKey(Scheme, on_delete=models.CASCADE, related_name="scheme")
     section_title = models.CharField(max_length=100)
     ordering = models.CharField(max_length=50,choices=ORDERING)
-    is_conclusion = models.BooleanField()
     section_description = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.section_title
 
+class CriticalQuestion(models.Model):
+    related_scheme = models.ForeignKey(Scheme, on_delete=models.CASCADE, related_name="related_scheme")
+    is_attack_on_conclusion = models.BooleanField()
+    question = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.question
 
 class Entry(MPTTModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author")
@@ -41,7 +46,8 @@ class Entry(MPTTModel):
     downvotes = models.ManyToManyField(User, blank=True, related_name="downvotes")
     created_date = models.DateTimeField(default=timezone.now)
     modified_date = models.DateTimeField(blank=True, null=True)
-    deleted = models.BooleanField(default=False)
+    scheme_used = models.ForeignKey(Scheme, on_delete=models.CASCADE, related_name="scheme_used")
+    critical_question = models.ForeignKey(CriticalQuestion, null=True, blank=True, on_delete=models.CASCADE, related_name="critical_question")
 
     class MPTTMeta:
         order_insertion_by = ["-created_date"]

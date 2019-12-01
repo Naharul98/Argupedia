@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Counter Argument{% endblock %}
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-5 centered" style=" padding-bottom : 40px">
+                <div class="row justify-content-center my-3">
+                    <h5>Original Argument</h5>
+                </div>
+                <div class="row justify-content-center my-3">
+                    {{ entry.content_formatted|safe }}
+                </div>
+
+            </div>
+
+            <div class="col-md-7 centered" style="padding-bottom : 40px">
+                <div class="form-area">
+                    <form action="{% url 'counter-post-view' pk_scheme=scheme_id pk_post=entry.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="container center_div pl-3">
+                            <h4 style="margin-bottom: 15px; margin-top: 10px;text-align: center;">Provide your counter-argument</h4>
+                            <label for="text"><strong>Critique Position:</strong></label>
+                            <div class="col-md-12">
+                                <select class="form-control" id="critique" name="critique" required>
+                                    <option value="">Select</option>
+                                    {% for critique in critiques %}
+                                        <option value="{{critique.id}}">{{critique.question}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            {% for structure in scheme_structure %}
+                                <div class="form-group">
+                                    <label for="text"><strong>{{ structure.section_title }}:</strong></label>
+                                    <div class="col-md-12">
+                                        <textarea class="form-control" name="{{ structure.section_title }}" id="{{ structure.section_title }}" rows="2" placeholder="{{ structure.section_description }}" required></textarea>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <input type="submit" name="submit" class="btn btn-md active" style="background-color:#2d3246; color :white; width:120px; padding-left:10px;padding-bottom:5px;margin-left:270px;" role="button" aria-pressed="true" value="Submit"/>
+                            <a href="{% url 'home' %}" class="btn btn-md active" style="background-color:#2d3246; color :white; width:120px; padding-left:10px;padding-bottom:5px;">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

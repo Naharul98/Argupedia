@@ -1,4 +1,13 @@
 
+p {
+  display: block;
+  word-break: break-all;
+  word-wrap: break-word;
+  width: 800px;
+
+}
+
+
 .entry {
   list-style:none;
 }

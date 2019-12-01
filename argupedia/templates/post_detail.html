@@ -18,7 +18,7 @@
                 {% if user.is_authenticated %}
                     <div class="col-lg-4 text-right">
                         <div class="btn-group">
-                            <a href="{% url 'choose-scheme-view' is_create='1' %}" class="btn btn-dark btn-md active">Create a Debate Topic</a>
+                            <a href="#" class="btn btn-dark btn-md active">Visualize</a>
                         </div>
                     </div>
                 {% endif %}
@@ -54,7 +54,7 @@
                         <button class="downvote {% if user in node.downvotes.all %}user-downvoted{% endif %}" data-id="{{node.pk}}">&#8722;</button>
                     {% endif %}
                     <small><em>{{node.created_date}}</em></small>
-                    <a href="#" class="answerButton" value="{{node.pk}}" style="font-size: 12px">counter</a>
+                    <a href="{% url 'choose-scheme-view' node.pk %}" class="answerButton" value="{{node.pk}}" style="font-size: 12px">counter</a>
                     {% if node.user.pk == user.pk and not node.deleted %}
                         <a href="{% url 'posts-delete' node.pk %}" class="deleteButton" value="{{node.pk}}" style="font-size: 12px; color: red;">delete</a>
                     {% endif %}
