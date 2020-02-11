@@ -159,7 +159,9 @@ class CounterPost(View):
 
 class VisualizeView(View):
     def get(self, request, pk_post):
-        return render(request, "visualize.html", {"post_id": pk_post,})
+        subtree = Entry.objects.get(pk=pk_post)
+        root_nodes = subtree.get_descendants(include_self=True)
+        return render(request, "visualize.html", {"post_id": pk_post,"entries": root_nodes})
 
 
 
