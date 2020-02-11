@@ -51,7 +51,7 @@ class PostsDetailView(View):
         title = subtree.title
         root_nodes = subtree.get_descendants(include_self=True)
         root_nodes = root_nodes.annotate(overall_votes=(Count("upvotes") - Count("downvotes"))).order_by("-overall_votes")
-        return render(request, "post_detail.html", {"entries": root_nodes, "title" : title})
+        return render(request, "post_detail.html", {"entries": root_nodes, "title" : title, "root_post_id" : pk_post})
 
 class MyDiscussionsView(DetailView):
     model = User
@@ -155,6 +155,11 @@ class CounterPost(View):
         entry.save()
         entry.upvotes.add(request.user)
         return redirect('posts-detail-view', pk_post=pk_post)
+
+
+class VisualizeView(View):
+    def get(self, request, pk_post):
+        return render(request, "visualize.html", {"post_id": pk_post,})
 
 
 

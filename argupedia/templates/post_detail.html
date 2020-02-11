@@ -18,7 +18,7 @@
                 {% if user.is_authenticated %}
                     <div class="col-lg-4 text-right">
                         <div class="btn-group">
-                            <a href="#" class="btn btn-dark btn-md active">Visualize</a>
+                            <a href="{% url 'visualize-view' root_post_id %}" class="btn btn-dark btn-md active">Visualize</a>
                         </div>
                     </div>
                 {% endif %}
