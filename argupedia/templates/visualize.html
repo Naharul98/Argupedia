@@ -19,13 +19,13 @@
 
     </style>
     <script type="text/javascript">
-{% load mptt_tags %}
+        {% load mptt_tags %}
         var gr =  {
             nodes: [
                 {% recursetree entries %}
-                {
-                    id: {{node.pk}}, name: {{node.pk}}, label: 'Aggregation', group: 'Team C', runtime: 20, color:{% if node.parent == null %}"#ff0000"{% else %}"#0000ff"{% endif %}
-                },
+                    {
+                        id: {{node.pk}}, argument: '{{node.content_formatted|safe}}', group: 'Team C', runtime: 20, color:{% if node.parent == null %}"#ff0000"{% else %}"#0000ff"{% endif %}
+                    },
                     {{ children }}
                 {% endrecursetree %}
 
@@ -34,11 +34,17 @@
             ],
             links: [
                 {% recursetree entries %}
-                {% if node.parent != null %}
-                {
-                    source: {{ node.pk }}, target: {{ node.parent.pk }}, type: 'h1'
-                },
-                {% endif %}
+                    {% if node.parent != null %}
+                        {
+                            source: {{ node.pk }}, target: {{ node.parent.pk }}, critique: '{{ node.critical_question.question }}', scheme: '{{ node.scheme_used.scheme_name }}'
+
+                        },
+                        {% if node.critical_question.is_attack_on_conclusion %}
+                            {
+                                source: {{ node.parent.pk }}, target: {{ node.pk }}, critique: 'Backed by premise claims', scheme: '{{ node.parent.scheme_used.scheme_name }}'
+                            },
+                        {% endif %}
+                    {% endif %}
                     {{ children }}
                 {% endrecursetree %}
 
@@ -63,10 +69,10 @@
         svg.append('defs').append('marker')
             .attrs({'id':'arrowhead',
                 'viewBox':'-0 -5 10 10',
-                'refX':18,
+                'refX':16,
                 'refY':0,
                 'orient':'auto',
-                'markerWidth':10,
+                'markerWidth':2.2,
                 'markerHeight':10,
                 'xoverflow':'visible'})
             .append('svg:path')
@@ -101,11 +107,12 @@
                     'class': 'edgepath',
                     'fill-opacity': 1,
                     'stroke-opacity': 1,
-                    'stroke': function (d) {return 'green'},
+                    'stroke-width': 6,
+                    'stroke': function (d) {return '#e0e0e0'},
                     'id': function (d, i) {return 'edgepath' + i}
                 })
-                .on('mouseover', function (d, i) {tip.html(d.source.name);tip.show();})
-                .on('mouseout', function (d, i) {tip.hide();});
+                .on('mouseover', function (d, i) {tip.html(d.critique);tip.show(); d3.select(this).attr("stroke", "#cdcdcd");})
+                .on('mouseout', function (d, i) {tip.hide();d3.select(this).attr("stroke", "#e0e0e0");});
 
 
             edgelabels = svg.selectAll(".edgelabel")
@@ -116,16 +123,18 @@
                 .attrs({
                     'class': 'edgelabel',
                     'id': function (d, i) {return 'edgelabel' + i},
-                    'font-size': 10,
-                    'fill': '#aaa'
+                    'font-size': 9,
+                    'fill': 'black'
                 });
 
             edgelabels.append('textPath')
                 .attr('xlink:href', function (d, i) {return '#edgepath' + i})
                 .style("text-anchor", "middle")
                 .style("pointer-events", "none")
+                .style("font-weight", "bold")
                 .attr("startOffset", "50%")
-                .text(function (d) {return d.type})
+                .text(function (d) {return d.scheme});
+
 
             node = svg.selectAll(".node")
                 .data(nodes)
@@ -133,7 +142,7 @@
                 .append("g")
                 .attr("class", "node")
                 .on("click", function (d) {window.location.replace("/posts/" + d.id + "/");})
-                .on('mouseover', function (d) {tip.html("<strong>hello</strong>");tip.show();})
+                .on('mouseover', function (d) {tip.html(d.argument);tip.show();})
                 .on('mouseout', tip.hide)
                 .call(d3.drag()
                     .on("start", dragstarted)
@@ -148,16 +157,16 @@
 
             node.append("title")
                 .text(function (d) {return d.id;});
-
+            //put name over node here
             node.append("text")
                 .attr("dy", 4)
                 .attr("dx", -15)
-                .text(d => d.name);
-
+                .text(d => "");
+            //put text over node here
             node.append("text")
                 .attr("dy",12)
                 .attr("dx", -8)
-                .text(d=> d.runtime);
+                .text(d=> "");
 
             simulation
                 .nodes(nodes)
