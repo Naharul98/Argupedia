@@ -70,7 +70,7 @@
             .attrs({'id':'arrowhead',
                 'viewBox':'-0 -5 10 10',
                 'refX':16,
-                'refY':0,
+                'refY':-0.5,
                 'orient':'auto',
                 'markerWidth':2.2,
                 'markerHeight':10,
@@ -82,8 +82,10 @@
 
 
         var simulation = d3.forceSimulation()
-            .force("link", d3.forceLink().id(function (d) {return d.id;}).distance(100).strength(1))
-            .force("charge", d3.forceManyBody())
+            .force("link", d3.forceLink().id(function (d) {return d.id;}).distance(100).strength(0.5))
+            .force("charge", d3.forceManyBody().strength(-400))
+            .force("x", d3.forceX())
+            .force("y", d3.forceY())
             .force("center", d3.forceCenter(width / 2, height / 2));
 
         update(gr.links, gr.nodes);
@@ -183,8 +185,8 @@
                 .attr("x2", function (d) {return d.target.x;})
                 .attr("y2", function (d) {return d.target.y;});
 
-            node
-                .attr("transform", function (d) {return "translate(" + d.x + ", " + d.y + ")";});
+            node.attr("transform", function (d) {return "translate(" + d.x + ", " + d.y + ")";});
+
 
             edgepaths.attr("d", function (d) {
                 var dx = d.target.x - d.source.x,
@@ -237,65 +239,7 @@
             d.fy = d3.event.y;
         }
 
+
     </script>
 
 {% endblock %}
-
-
-
-
-
-
-
-{% comment %}
-
-
-{% extends 'base.html' %}
-{% block title %}Visualization{% endblock %}
-{% block content %}
-{% load static %}
-
-<script src="{% static "/argupedia/sigma.min.js" %}"></script>
-
-    <div class="container" style="height: 650px; width: 1000px;">
-    <div id='sigma-container' style="width:100%; height:100%; background-color:#E1E1E1;"></div>
-
-    </div>
-
-
-    <script>
-var s = new sigma(
-  {
-    renderer: {
-      container: document.getElementById('sigma-container'),
-      type: 'canvas'
-    },
-    settings: {
-     edgeLabelSize: 'proportional',
-    }
-  }
-);
-
-// Create a graph object
-{% load mptt_tags %}
-var graph = {
-  nodes: [
-      {% recursetree entries %}
-    {
-        id: "{{ node.pk }}", label: "{{node.scheme_used.scheme_name}}", x: Math.random(), y: Math.random(), size: 3, color: '#ff0000'
-    },
-          {{ children }}
-      {% endrecursetree %}
-
-  ]
-}
-
-// Load the graph in sigma
-s.graph.read(graph);
-// Ask sigma to draw it
-s.refresh();
-    </script>
-
-{% endblock %}
-
-{% endcomment %}
