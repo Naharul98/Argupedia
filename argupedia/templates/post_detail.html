@@ -15,7 +15,7 @@
                         {% endif %}
                     </div>
                 </div>
-                {% if user.is_authenticated %}
+                {% if is_parent %}
                     <div class="col-lg-4 text-right">
                         <div class="btn-group">
                             <a href="{% url 'visualize-view' root_post_id %}" class="btn btn-dark btn-md active">Visualize</a>

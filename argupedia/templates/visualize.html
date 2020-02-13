@@ -1,234 +1,259 @@
 {% extends 'base.html' %}
 {% block title %}Visualization{% endblock %}
 {% block content %}
-{% load static %}
+    {% load static %}
 
-<script src="https://d3js.org/d3.v4.min.js" type="text/javascript"></script>
-<script src="https://d3js.org/d3-selection-multi.v1.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js" type="text/javascript"></script>
+    <script src="https://d3js.org/d3-selection-multi.v1.js"></script>
 
     <div class="container" style="height: 650px; width: 1000px;">
     <svg width="960" height="600"></svg>
 
 
     <script src="https://d3js.org/d3.v4.min.js" type="text/javascript"></script>
-<script src="https://d3js.org/d3-selection-multi.v1.js"></script>
+    <script src="https://d3js.org/d3-selection-multi.v1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 
 
     <style>
 
     </style>
-<script type="text/javascript">
-
-var gr =  {
-  nodes: [
-        {id: 1, name: 'AGGR', label: 'Aggregation', group: 'Team C', runtime: 20, color:"#ff0000"},
-        {id: 2, name: 'ASMT', label: 'Assessment Repository', group: 'Team A', runtime: 60, color:"#ff0000"},
-        {id: 3, name: 'CALC', label: 'Final Calc', group: 'Team C', runtime: 30, color:"#ff0000"},
-        {id: 4, name: 'DEMO', label: 'Demographic', group: 'Team B', runtime: 40, color:"#ff0000"},
-        {id: 5, name: 'ELIG', label: 'Eligibility', group: 'Team B', runtime: 20, color:"#ff0000"},
-        {id: 6, name: 'GOAL', label: 'Goal Setting', group: 'Team C', runtime: 60, color:"#ff0000"},
-        {id: 7, name: 'GROW', label: 'Growth Model', group: 'Team C', runtime: 60, color:"#ff0000"},
-        {id: 8, name: 'LINK', label: 'Linkage', group: 'Team A', runtime: 100, color:"#ff0000"},
-        {id: 9, name: 'MOSL', label: 'MOSL', group: 'Team A', runtime: 80, color:"#ff0000"},
-        {id: 10, name: 'MOTP', label: 'MOTP', group: 'Team A', runtime: 20, color:"#ff0000"},
-        {id: 11, name: 'REPT', label: 'Reporting', group: 'Team E', runtime: 240, color:"#ff0000"},
-        {id: 12, name: 'SEDD', label: 'State Data', group: 'Team A', runtime: 30, color:"#ff0000"},
-        {id: 13, name: 'SNAP', label: 'Snapshot', group: 'Team A', runtime: 40, color:"#ff0000"}
-	],
-  links: [
-    {source: 1, target: 3, type: 'Next -->>'},
-    {source: 6, target: 1, type: 'Next -->>'},
-    {source: 7, target: 1, type: 'Next -->>'},
-    {source: 9, target: 1, type: 'Next -->>'},
-    {source: 2, target: 4, type: 'Next -->>'},
-    {source: 2, target: 6, type: 'Next -->>'},
-    {source: 2, target: 7, type: 'Next -->>'},
-    {source: 2, target: 8, type: 'Next -->>'},
-    {source: 2, target: 9, type: 'Next -->>'},
-    {source: 10, target: 3, type: 'Next -->>'},
-    {source: 3, target: 11, type: 'Next -->>'},
-    {source: 8, target: 5, type: 'Go to ->>'},
-    {source: 8, target: 11, type: 'Go to ->>'},
-    {source: 6, target: 9, type: 'Go to ->>'},
-    {source: 7, target: 9, type: 'Go to ->>'},
-    {source: 8, target: 9, type: 'Go to ->>'},
-    {source: 9, target: 11, type: 'Go to ->>'},
-    {source: 12, target: 9, type: 'Go to ->>'},
-    {source: 13, target: 11, type: 'Go to ->>'},
-    {source: 13, target: 2, type: 'Go to ->>'},
-    {source: 13, target: 4, type: 'This way>>'},
-    {source: 13, target: 5, type: 'This way>>'},
-    {source: 13, target: 8, type: 'This way>>'},
-    {source: 13, target: 9, type: 'This way>>'},
-    {source: 13, target: 10, type: 'This way>>'},
-    {source: 4, target: 7, type: 'Next -->>'},
-    {source: 4, target: 2, type: 'Next -->>'}
-  ]
-};
-
-var tip = d3.tip()
-  .attr('class', 'd3-tip')
-  .offset([-10, 0]);
+    <script type="text/javascript">
+{% load mptt_tags %}
+        var gr =  {
+            nodes: [
+                {% recursetree entries %}
+                {
+                    id: {{node.pk}}, name: {{node.pk}}, label: 'Aggregation', group: 'Team C', runtime: 20, color:{% if node.parent == null %}"#ff0000"{% else %}"#0000ff"{% endif %}
+                },
+                    {{ children }}
+                {% endrecursetree %}
 
 
 
-    var svg = d3.select("svg"),
-        width = +svg.attr("width"),
-        height = +svg.attr("height"),
-        node,
-        link;
+            ],
+            links: [
+                {% recursetree entries %}
+                {% if node.parent != null %}
+                {
+                    source: {{ node.pk }}, target: {{ node.parent.pk }}, type: 'h1'
+                },
+                {% endif %}
+                    {{ children }}
+                {% endrecursetree %}
 
 
-    svg.call(tip);
+            ]
+        };
 
-    svg.append('defs').append('marker')
-        .attrs({'id':'arrowhead',
-            'viewBox':'-0 -5 10 10',
-            'refX':23,
-            'refY':0,
-            'orient':'auto',
-            'markerWidth':13,
-            'markerHeight':13,
-            'xoverflow':'visible'})
-        .append('svg:path')
-        .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-        .attr('fill', '#999')
-        .style('stroke','none');
+        var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0]);
 
 
-    var simulation = d3.forceSimulation()
-        .force("link", d3.forceLink().id(function (d) {return d.id;}).distance(100).strength(1))
-        .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(width / 2, height / 2));
+        var svg = d3.select("svg"),
+            width = +svg.attr("width"),
+            height = +svg.attr("height"),
+            node,
+            link;
+
+
+        svg.call(tip);
+
+        svg.append('defs').append('marker')
+            .attrs({'id':'arrowhead',
+                'viewBox':'-0 -5 10 10',
+                'refX':18,
+                'refY':0,
+                'orient':'auto',
+                'markerWidth':10,
+                'markerHeight':10,
+                'xoverflow':'visible'})
+            .append('svg:path')
+            .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
+            .attr('fill', '#999')
+            .style('stroke','none');
+
+
+        var simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(function (d) {return d.id;}).distance(100).strength(1))
+            .force("charge", d3.forceManyBody())
+            .force("center", d3.forceCenter(width / 2, height / 2));
 
         update(gr.links, gr.nodes);
 
 
-    function update(links, nodes) {
-        link = svg.selectAll(".link")
-            .data(links)
-            .enter()
-            .append("line")
-            .attr("class", "link")
-            .attr('marker-end','url(#arrowhead)')
+        function update(links, nodes) {
+            link = svg.selectAll(".link")
+                .data(links)
+                .enter()
+                .append("line")
+                .attr("class", "link")
+                .style("stroke-width", 1)
 
-        link.append("title")
-            .text(function (d) {return d.type;});
 
-        edgepaths = svg.selectAll(".edgepath")
-            .data(links)
-            .enter()
-            .append('path')
-            .attrs({
-                'class': 'edgepath',
-                'fill-opacity': 1,
-                'stroke-opacity': 1,
-                'stroke': function (d) {return 'green'},
-                'id': function (d, i) {return 'edgepath' + i}
-            })
-            .style("pointer-events", "none");
+            edgepaths = svg.selectAll(".edgepath")
+                .data(links)
+                .enter()
+                .append('path')
+                .attr('marker-end','url(#arrowhead)')
+                .attrs({
+                    'class': 'edgepath',
+                    'fill-opacity': 1,
+                    'stroke-opacity': 1,
+                    'stroke': function (d) {return 'green'},
+                    'id': function (d, i) {return 'edgepath' + i}
+                })
+                .on('mouseover', function (d, i) {tip.html(d.source.name);tip.show();})
+                .on('mouseout', function (d, i) {tip.hide();});
 
-        edgelabels = svg.selectAll(".edgelabel")
-            .data(links)
-            .enter()
-            .append('text')
-            .style("pointer-events", "none")
-            .attrs({
-                'class': 'edgelabel',
-                'id': function (d, i) {return 'edgelabel' + i},
-                'font-size': 10,
-                'fill': '#aaa'
-            });
 
-        edgelabels.append('textPath')
-            .attr('xlink:href', function (d, i) {return '#edgepath' + i})
-            .style("text-anchor", "middle")
-            .style("pointer-events", "none")
-            .attr("startOffset", "50%")
-            .text(function (d) {return d.type});
+            edgelabels = svg.selectAll(".edgelabel")
+                .data(links)
+                .enter()
+                .append('text')
+                .style("pointer-events", "none")
+                .attrs({
+                    'class': 'edgelabel',
+                    'id': function (d, i) {return 'edgelabel' + i},
+                    'font-size': 10,
+                    'fill': '#aaa'
+                });
 
-        node = svg.selectAll(".node")
-            .data(nodes)
-            .enter()
-            .append("g")
-            .attr("class", "node")
-            .on("click", function (d) {window.location.replace("/");})
-            .on('mouseover', function (d) {tip.html("<strong>hello</strong>");tip.show();})
-            .on('mouseout', tip.hide)
-            .call(d3.drag()
+            edgelabels.append('textPath')
+                .attr('xlink:href', function (d, i) {return '#edgepath' + i})
+                .style("text-anchor", "middle")
+                .style("pointer-events", "none")
+                .attr("startOffset", "50%")
+                .text(function (d) {return d.type})
+
+            node = svg.selectAll(".node")
+                .data(nodes)
+                .enter()
+                .append("g")
+                .attr("class", "node")
+                .on("click", function (d) {window.location.replace("/posts/" + d.id + "/");})
+                .on('mouseover', function (d) {tip.html("<strong>hello</strong>");tip.show();})
+                .on('mouseout', tip.hide)
+                .call(d3.drag()
                     .on("start", dragstarted)
                     .on("drag", dragged)
-            );
+                );
 
-        node.append("circle")
-            .attr("r", 10)
-            .style("fill", function (d) {return d.color;})
-            .style("stroke-opacity",0.3)
-            .style("stroke-width", d => d.runtime/10);
+            node.append("circle")
+                .attr("r", 10)
+                .style("fill", function (d) {return d.color;})
+                .style("stroke-opacity",0.3)
+                .style("stroke-width", d => d.runtime/10);
 
-        node.append("title")
-            .text(function (d) {return d.id;});
+            node.append("title")
+                .text(function (d) {return d.id;});
 
-        node.append("text")
-            .attr("dy", 4)
-            .attr("dx", -15)
-            .text(d => d.name);
+            node.append("text")
+                .attr("dy", 4)
+                .attr("dx", -15)
+                .text(d => d.name);
 
-        node.append("text")
-            .attr("dy",12)
-            .attr("dx", -8)
-            .text(d=> d.runtime);
+            node.append("text")
+                .attr("dy",12)
+                .attr("dx", -8)
+                .text(d=> d.runtime);
+
+            simulation
+                .nodes(nodes)
+                .on("tick", ticked);
+
+            simulation.force("link")
+                .links(links);
+        }
+
+        function ticked() {
+            link
+                .attr("x1", function (d) {return d.source.x;})
+                .attr("y1", function (d) {return d.source.y;})
+                .attr("x2", function (d) {return d.target.x;})
+                .attr("y2", function (d) {return d.target.y;});
+
+            node
+                .attr("transform", function (d) {return "translate(" + d.x + ", " + d.y + ")";});
+
+            edgepaths.attr('d', function (d) {
+                //return 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y;
+                var dx = d.target.x - d.source.x,
+                    dy = d.target.y - d.source.y,
+                    dr = Math.sqrt(dx * dx + dy * dy);
+                /* return "M" +
+                     d.source.x + "," +
+                     d.source.y + "A" +
+                     dr + "," + dr + " 0 0,1 " +
+                     d.target.x + "," +
+                     d.target.y; */
+
+                const conincidentLines = false;
+                if (conincidentLines) {
+                    return "M" +
+                        d.source.x + "," +
+                        d.source.y + "L" +
+                        d.target.x + "," +
+                        d.target.y;
+                }
+                else {
+                    delta = calcTranslationExact(4, d.source, d.target);
+                    var rightwardSign = d.target.x > d.source.x ? 1 : -1;
+                    return "M" +
+                        (d.source.x + rightwardSign * delta.dx) + "," +
+                        (d.source.y + (-rightwardSign * delta.dy)) + "L" +
+                        (d.target.x + rightwardSign * delta.dx) + "," +
+                        (d.target.y + (-rightwardSign * delta.dy));
+                }
+            });
+
+            edgelabels.attr('transform', function (d) {
+                if (d.target.x < d.source.x) {
+                    var bbox = this.getBBox();
+
+                    rx = bbox.x + bbox.width / 2;
+                    ry = bbox.y + bbox.height / 2;
+                    return 'rotate(180 ' + rx + ' ' + ry + ')';
+                }
+                else {
+                    return 'rotate(0)';
+                }
+            });
+        }
 
 
-        simulation
-            .nodes(nodes)
-            .on("tick", ticked);
-
-        simulation.force("link")
-            .links(links);
-    }
-
-    function ticked() {
-        link
-            .attr("x1", function (d) {return d.source.x;})
-            .attr("y1", function (d) {return d.source.y;})
-            .attr("x2", function (d) {return d.target.x;})
-            .attr("y2", function (d) {return d.target.y;});
-
-        node
-            .attr("transform", function (d) {return "translate(" + d.x + ", " + d.y + ")";});
-
-        edgepaths.attr('d', function (d) {
-            return 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y;
-        });
-
-        edgelabels.attr('transform', function (d) {
-            if (d.target.x < d.source.x) {
-                var bbox = this.getBBox();
-
-                rx = bbox.x + bbox.width / 2;
-                ry = bbox.y + bbox.height / 2;
-                return 'rotate(180 ' + rx + ' ' + ry + ')';
+        function calcTranslationExact(targetDistance, point0, point1)
+        {
+            var x1_x0 = point1.x - point0.x,
+                y1_y0 = point1.y - point0.y,
+                x2_x0, y2_y0;
+            if (y1_y0 === 0) {
+                x2_x0 = 0;
+                y2_y0 = targetDistance;
+            } else {
+                var angle = Math.atan((x1_x0) / (y1_y0));
+                x2_x0 = -targetDistance * Math.cos(angle);
+                y2_y0 = targetDistance * Math.sin(angle);
             }
-            else {
-                return 'rotate(0)';
-            }
-        });
-    }
+            return {
+                dx: x2_x0,
+                dy: y2_y0
+            };
+        }
 
-    function dragstarted(d) {
-        if (!d3.event.active) simulation.alphaTarget(0.3).restart()
-        d.fx = d.x;
-        d.fy = d.y;
-    }
+        function dragstarted(d) {
+            if (!d3.event.active) simulation.alphaTarget(0.3).restart()
+            d.fx = d.x;
+            d.fy = d.y;
+        }
 
-    function dragged(d) {
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
-    }
+        function dragged(d) {
+            d.fx = d3.event.x;
+            d.fy = d3.event.y;
+        }
 
-</script>
+    </script>
 
 {% endblock %}
 
