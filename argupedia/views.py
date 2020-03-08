@@ -198,7 +198,7 @@ class VisualizeView(View):
         print(set_in)
         print(set_out)
         print(set_undec)
-        return render(request, "visualize.html", {"post_id": pk_post,"entries": root_nodes,"in": set_in,"out": set_out, "undec" : set_undec})
+        return render(request, "visualize.html", {"post_id": pk_post,"entries": root_nodes,"set_in": set_in,"set_out": set_out, "set_undec" : set_undec})
 
 
 
