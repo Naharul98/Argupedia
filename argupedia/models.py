@@ -48,6 +48,7 @@ class Entry(MPTTModel):
     modified_date = models.DateTimeField(blank=True, null=True)
     scheme_used = models.ForeignKey(Scheme, on_delete=models.CASCADE, related_name="scheme_used")
     critical_question = models.ForeignKey(CriticalQuestion, null=True, blank=True, on_delete=models.CASCADE, related_name="critical_question")
+    is_in = models.NullBooleanField(max_length=3,blank=True, null=True, default=None,)
 
     class MPTTMeta:
         order_insertion_by = ["-created_date"]
@@ -68,6 +69,17 @@ class Entry(MPTTModel):
         # Clean and format content
         self.content_formatted = bleach.clean(markdown.markdown(self.content_formatted, extensions=["extra"]),settings.MARKDOWN_TAGS,settings.MARKDOWN_ATTRS,)
         self.content = bleach.clean(self.content, settings.MARKDOWN_TAGS, settings.MARKDOWN_ATTRS)
+
+    def get_attackers(self):
+        attackers = set()
+        if len(self.get_children()) != 0:
+            for item in self.get_children():
+                attackers.add(item)
+        if(self.parent != None):
+            if self.critical_question.is_attack_on_conclusion == True:
+                attackers.add(self.parent)
+        return attackers
+
 
     def save(self, *args, **kwargs):
         created = True if not self.pk else False

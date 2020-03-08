@@ -161,7 +161,44 @@ class VisualizeView(View):
     def get(self, request, pk_post):
         subtree = Entry.objects.get(pk=pk_post)
         root_nodes = subtree.get_descendants(include_self=True)
-        return render(request, "visualize.html", {"post_id": pk_post,"entries": root_nodes})
+        set_in = set()
+        set_out = set()
+        set_undec = set()
+
+        for entry in root_nodes:
+            if (entry.has_children == False and entry.is_root_node() == False):
+                if (entry.critical_question.is_attack_on_conclusion == False):
+                    set_in.add(entry.pk)
+        while(True):
+            prev_set_in = set_in.copy()
+            prev_set_out = set_out.copy()
+            for entry in root_nodes:
+                if entry.pk not in set_in and entry.pk not in set_out:
+                    okay = True
+                    for y in entry.get_attackers():
+                        if y.pk not in set_out:
+                            okay = False
+                            break
+                    if okay == True:
+                        set_in.add(entry.pk)
+            for entry in root_nodes:
+                if entry.pk not in set_out and entry.pk not in set_in:
+                    okay = False
+                    for y in entry.get_attackers():
+                        if y.pk in set_in:
+                            okay = True
+                            break
+                    if okay == True:
+                        set_out.add(entry.pk)
+            if(prev_set_in == set_in and prev_set_out == set_out):
+                break
+        for entry in root_nodes:
+            if entry.pk not in set_in and entry.pk not in set_out:
+                set_undec.add(entry.pk)
+        print(set_in)
+        print(set_out)
+        print(set_undec)
+        return render(request, "visualize.html", {"post_id": pk_post,"entries": root_nodes,"in": set_in,"out": set_out, "undec" : set_undec})
 
 
 
