@@ -16,34 +16,10 @@ import json
 
 # Create your views here.
 class HomeView(View):
-
-    def rebuild_tree(self, request, root_nodes):
-        paginator = Paginator(root_nodes, settings.PAGINATE_ENTRIES_BY)
-        page = request.GET.get("page")
-        queryset = []
-        try:
-            queryset = paginator.page(page)
-        except PageNotAnInteger:
-            queryset = paginator.page(1)
-        except EmptyPage:
-            queryset = paginator.page(paginator.num_pages)
-        new_queryset = []
-        for node in queryset.object_list:
-            new_queryset.append(node)
-            for descendant in node.get_descendants():
-                if descendant.level >= 9:
-                    if descendant.level == 9:
-                        new_queryset[-1].has_hidden_children = True
-                    continue
-                new_queryset.append(descendant)
-        queryset.object_list = new_queryset
-        return queryset
-
     def get(self, request):
         root_nodes = Entry.objects.root_nodes()
         root_nodes = root_nodes.annotate(overall_votes=(Count("upvotes") - Count("downvotes"))).order_by("-overall_votes")
-        queryset = self.rebuild_tree(request, root_nodes)
-        return render(request, "home.html", {"entries": queryset})
+        return render(request, "home.html", {"entries": root_nodes})
 
 class PostsDetailView(View):
     def get(self, request, pk_post):
@@ -142,7 +118,8 @@ def upvote(request):
 
     data['upvotes'] = entry.upvotes.count()
     data['downvotes'] = entry.downvotes.count()
-
+    entry.save()
+    Entry.objects.rebuild()
     x = json.dumps(data)
     return HttpResponse(x, content_type="application/json")
 
@@ -161,7 +138,8 @@ def downvote(request):
 
     data['upvotes'] = entry.upvotes.count()
     data['downvotes'] = entry.downvotes.count()
-
+    entry.save()
+    Entry.objects.rebuild()
     x = json.dumps(data)
     return HttpResponse(x, content_type="application/json")
 
