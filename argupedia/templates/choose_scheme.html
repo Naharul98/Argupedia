@@ -13,28 +13,76 @@
             {% endfor %}
         </div>
     {% else %}
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
-                <div class=“col-md-8”>
-                    <div class="row justify-content-center my-3">
+                <div class=“col-lg-6”>
+                    <div class="row justify-content-center">
                         <h5>Original Argument</h5>
                     </div>
-                    <div class="row justify-content-center my-3">
+                    <div class="row justify-content-center ml-5">
                         {{ entry.content_formatted|safe }}
                     </div>
                 </div>
-                <div class=“col-md-4”>
-                    <div class="row justify-content-center my-3">
-                        <h5>Choose Counter-Argument Scheme</h5>
-                    </div>
-                    {% for scheme in schemes %}
-                        <div class="row justify-content-center">
-                            <a href="{% url 'counter-post-view' pk_scheme=scheme.pk pk_post=entry.id %}" class="btn btn-dark btn-lg active mb-2">{{ scheme.scheme_name }}</a>
+
+                <div class=“col-lg-6”>
+
+                    <div class="container center_div">
+                        <h4 style="margin-bottom: 15px; margin-top: 10px;text-align: center;">Counter Argument</h4>
+                        <label for="text"><strong>Critique Position:</strong></label>
+                        <div class="col-md-12">
+                            <select class="form-control" id="critique" name="critique" required onchange="configureVisibility();appendLinks();">
+                                <option value="">Select</option>
+                                {% for critique in critiques %}
+                                    <option value="{{critique.id}}">{{critique.question}}</option>
+                                {% endfor %}
+                            </select>
                         </div>
-                    {% endfor %}
+                        <div class=“col-md-4” id="scheme_list">
+                            <div class="row justify-content-center my-3">
+                                <h5>Choose Counter-Argument Scheme</h5>
+                            </div>
+                            {% for scheme in schemes %}
+                                <div class="row justify-content-center">
+                                    {% comment %}
+                                        <a href="{% url 'counter-post-view' pk_scheme=scheme.pk pk_post=entry.id %}" class="btn btn-dark btn-lg active mb-2">
+                                            {{ scheme.scheme_name }}
+                                        </a>
+                                    {% endcomment %}
+
+                                    <a href="#" class="btn btn-dark btn-lg active mb-2" id="btn{{scheme.pk}}">
+                                        {{ scheme.scheme_name }}
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
+
+
             </div>
         </div>
+
+        <script>
+            function appendLinks()
+            {
+                {% for scheme in schemes %}
+                    var url = "{% url 'counter-post-view' pk_scheme=scheme.pk pk_post=entry.id critical_question_id=123 %}".replace('123', $('#critique').val());
+                    document.getElementById("btn" + {{scheme.pk}}).setAttribute('href', url.toString());
+                {% endfor %}
+            }
+            function configureVisibility()
+            {
+                if($("#critique").val()=="")
+                {
+                    document.getElementById("scheme_list").style.visibility = "hidden";
+                }
+                else
+                {
+                    document.getElementById("scheme_list").style.visibility = "visible";
+                }
+            }
+            configureVisibility();
+        </script>
     {% endif %}
 
 {% endblock %}

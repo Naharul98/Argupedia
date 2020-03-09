@@ -16,7 +16,7 @@
 
             <div class="col-md-7 centered" style="padding-bottom : 40px">
                 <div class="form-area">
-                    <form action="{% url 'counter-post-view' pk_scheme=scheme_id pk_post=entry.id %}" method="post">
+                    <form action="{% url 'counter-post-view' pk_scheme=scheme_id pk_post=entry.id critical_question_id=critical_question_id %}" method="post">
                         {% csrf_token %}
                         <div class="container center_div pl-3">
                             <h4 style="margin-bottom: 15px; margin-top: 10px;text-align: center;">Provide your counter-argument</h4>
@@ -25,7 +25,7 @@
                                 <select class="form-control" id="critique" name="critique" required>
                                     <option value="">Select</option>
                                     {% for critique in critiques %}
-                                        <option value="{{critique.id}}">{{critique.question}}</option>
+                                        <option value="{{critique.id}}" {% if critical_question_id == critique.id %}selected{% endif %}>{{critique.question}}</option>
                                     {% endfor %}
                                 </select>
                             </div>

@@ -89,10 +89,13 @@ class ChooseSchemeView(View):
     def get(self, request, pk_post):
         all_schemes = Scheme.objects.all()
         entry = ''
+        criticalQuestions = ''
         if(pk_post != 0):
             entry = Entry.objects.get(pk=pk_post)
+            attacking = Entry.objects.get(pk=pk_post)
+            criticalQuestions = CriticalQuestion.objects.filter(related_scheme=attacking.scheme_used.id)
 
-        return render(request, "choose_scheme.html", {"schemes": all_schemes, "pk_post": pk_post, "entry": entry})
+        return render(request, "choose_scheme.html", {"schemes": all_schemes, "pk_post": pk_post,"critiques": criticalQuestions, "entry": entry})
 
 
 class CreatePost(View):
@@ -126,13 +129,13 @@ class DeletePost(View):
 
 
 class CounterPost(View):
-    def get(self, request, pk_scheme, pk_post):
+    def get(self, request, pk_scheme, pk_post, critical_question_id):
         argumentation_scheme = SchemeStructure.objects.filter(scheme=pk_scheme).order_by('ordering')
         attacking = Entry.objects.get(pk=pk_post)
         criticalQuestions = CriticalQuestion.objects.filter(related_scheme=attacking.scheme_used.id)
-        return render(request, "counter_post.html", {"scheme_structure": argumentation_scheme, "scheme_id": pk_scheme, "entry": Entry.objects.get(pk=pk_post), "critiques": criticalQuestions})
+        return render(request, "counter_post.html", {"scheme_structure": argumentation_scheme, "scheme_id": pk_scheme,"critical_question_id": critical_question_id, "entry": Entry.objects.get(pk=pk_post), "critiques": criticalQuestions})
 
-    def post(self, request, pk_scheme, pk_post):
+    def post(self, request, pk_scheme, pk_post, critical_question_id):
         argumentation_scheme = SchemeStructure.objects.filter(scheme=pk_scheme).order_by('ordering')
         stringBuilder = []
         critique = CriticalQuestion.objects.get(pk=request.POST.get('critique'))
@@ -195,9 +198,9 @@ class VisualizeView(View):
         for entry in root_nodes:
             if entry.pk not in set_in and entry.pk not in set_out:
                 set_undec.add(entry.pk)
-        print(set_in)
-        print(set_out)
-        print(set_undec)
+        #print(set_in)
+        #print(set_out)
+        #print(set_undec)
         return render(request, "visualize.html", {"post_id": pk_post,"entries": root_nodes,"set_in": set_in,"set_out": set_out, "set_undec" : set_undec})
 
 

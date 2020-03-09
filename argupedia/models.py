@@ -48,7 +48,6 @@ class Entry(MPTTModel):
     modified_date = models.DateTimeField(blank=True, null=True)
     scheme_used = models.ForeignKey(Scheme, on_delete=models.CASCADE, related_name="scheme_used")
     critical_question = models.ForeignKey(CriticalQuestion, null=True, blank=True, on_delete=models.CASCADE, related_name="critical_question")
-    is_in = models.NullBooleanField(max_length=3,blank=True, null=True, default=None,)
 
     class MPTTMeta:
         order_insertion_by = ["-created_date"]

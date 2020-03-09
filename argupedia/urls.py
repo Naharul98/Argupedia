@@ -19,9 +19,11 @@ urlpatterns = [
     path("posts/delete/<int:pk_post>/", DeletePost.as_view(), name="posts-delete"),
     path("posts/mydiscussions/<str:username>/", MyDiscussionsView.as_view(), name="my-discussions-view"),
     path("posts/create/choose_scheme/<int:pk_post>/", ChooseSchemeView.as_view(), name="choose-scheme-view"),
+
     path("posts/create/input_argument/<str:pk_scheme>/", CreatePost.as_view(), name="create-post-view"),
     ## in work
-    path("posts/counter/<str:pk_scheme>/<int:pk_post>/", CounterPost.as_view(), name="counter-post-view"),
+    #path("posts/counter/<str:pk_scheme>/<int:pk_post>/", CounterPost.as_view(), name="counter-post-view"),
+path("posts/counter/<str:pk_scheme>/<int:pk_post>/<int:critical_question_id>/", CounterPost.as_view(), name="counter-post-view"),
     ##visualization
     path("posts/visualize/<int:pk_post>/", VisualizeView.as_view(), name="visualize-view"),
 
