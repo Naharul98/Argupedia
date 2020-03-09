@@ -11,7 +11,7 @@
                     </div>
                     <div class="row ml-2" >
                         {% if not user.is_authenticated %}
-                            <h7 class="pl-3"><a href="/accounts/login/">Log-in</a> or <a href="accounts/signup">Register</a> to create and engage in discussions!</h7>
+                            <h7 class="pl-3"><a href="/accounts/login/">Login</a> or <a href="accounts/signup">Register</a> to create and engage in debates!</h7>
                         {% endif %}
                     </div>
                 </div>
@@ -31,8 +31,8 @@
         {% if not entries %}
             <h6>Oops. There are no discussions to show.</h6>
         {% endif %}
-    <!-- mttp tree start -->
-        {% recursetree entries %}
+        <!-- mttp tree start -->
+        {% for node in entries %}
             {% if node.user.pk == user.pk %}
                 <li class="usernode">
                     {% elif node.is_root_node %}
@@ -55,23 +55,21 @@
             {% if node.is_root_node %}
                 <hr>
             {% endif %}
-        {% endrecursetree %}
+        {% endfor %}
     </ul>
 
-    <div class="pagination">
+    <div class="pagination pb-3">
     <span class="step-links">
         {% if entries.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ entries.previous_page_number }}">previous</a>
+            <a href="?page=1" class="btn btn-sm btn-outline-dark">&laquo; First</a>
+            <a href="?page={{ entries.previous_page_number }}" class="btn btn-sm btn-outline-dark">Previous</a>
         {% endif %}
 
-        <span class="current">
-            Page {{ entries.number }} of {{ entries.paginator.num_pages }}.
-        </span>
+        <span class="current"><em>Page {{ entries.number }} of {{ entries.paginator.num_pages }}.</em></span>
 
         {% if entries.has_next %}
-            <a href="?page={{ entries.next_page_number }}">next</a>
-            <a href="?page={{ entries.paginator.num_pages }}">last &raquo;</a>
+            <a href="?page={{ entries.next_page_number }}" class="btn btn-sm btn-outline-dark">Next</a>
+            <a href="?page={{ entries.paginator.num_pages }}" class="btn btn-sm btn-outline-dark">Last &raquo;</a>
         {% endif %}
     </span>
     </div>
