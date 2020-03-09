@@ -1,7 +1,4 @@
 from django.http import Http404
-from django.shortcuts import render
-import re
-from datetime import timedelta
 from django.conf import settings
 from django.views import View
 from .models import Entry
@@ -12,7 +9,10 @@ from django.db.models import Count
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import redirect, render
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+import json
 
 # Create your views here.
 class HomeView(View):
@@ -126,6 +126,44 @@ class DeletePost(View):
         Entry.objects.get(id=pk_post).delete()
         Entry.objects.rebuild()
         return redirect('home')
+
+@csrf_exempt
+def upvote(request):
+    entry = Entry.objects.get(id=request.POST.get('pk_post'))
+    data = {}
+    data['id'] = entry.pk
+    entry.downvotes.remove(request.user)
+    if request.user in entry.upvotes.all():
+        entry.upvotes.remove(request.user)
+        data['user_upvoted'] = False
+    else:
+        entry.upvotes.add(request.user)
+        data['user_upvoted'] = True
+
+    data['upvotes'] = entry.upvotes.count()
+    data['downvotes'] = entry.downvotes.count()
+
+    x = json.dumps(data)
+    return HttpResponse(x, content_type="application/json")
+
+@csrf_exempt
+def downvote(request):
+    entry = Entry.objects.get(id=request.POST.get('pk_post'))
+    data = {}
+    data['id'] = entry.pk
+    entry.upvotes.remove(request.user)
+    if request.user in entry.downvotes.all():
+        entry.downvotes.remove(request.user)
+        data['user_downvoted'] = False
+    else:
+        entry.downvotes.add(request.user)
+        data['user_downvoted'] = True
+
+    data['upvotes'] = entry.upvotes.count()
+    data['downvotes'] = entry.downvotes.count()
+
+    x = json.dumps(data)
+    return HttpResponse(x, content_type="application/json")
 
 
 class CounterPost(View):

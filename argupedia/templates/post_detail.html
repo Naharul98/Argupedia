@@ -31,7 +31,7 @@
         {% if not entries %}
             <h6>Oops. There are no discussions to show.</h6>
         {% endif %}
-    <!-- mttp tree start -->
+        <!-- mttp tree start -->
         {% recursetree entries %}
             {% if node.user.pk == user.pk %}
                 <li class="usernode">
@@ -81,4 +81,43 @@
         {% endrecursetree %}
     </ul>
 
+    <script>
+        $(document).on('click', '.upvote', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'upvote' %}",
+                type: 'POST',
+                data: {'pk_post': e.target.dataset['id']},
+                success: function (data) {
+                    $(`.downvote[data-id='${data.id}']`).removeClass("user-downvoted")
+                    if(data.user_upvoted == true)
+                    {
+                        e.target.classList.add("user-upvoted")
+                    } else {
+                        e.target.classList.remove("user-upvoted")
+                    }
+                    $(`.entry-points[data-id='${data.id}']`)[0].innerHTML = data.upvotes - data.downvotes
+                },
+            });
+        });
+
+        $(document).on('click', '.downvote', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'downvote' %}",
+                type: 'POST',
+                data: {'pk_post': e.target.dataset['id']},
+                success: function (data) {
+                    $(`.upvote[data-id='${data.id}']`).removeClass("user-upvoted")
+                    if(data.user_downvoted == true){
+                        e.target.classList.add("user-downvoted")
+                    } else {
+                        e.target.classList.remove("user-downvoted")
+                    }
+                    $(`.entry-points[data-id='${data.id}']`)[0].innerHTML = data.upvotes - data.downvotes
+                },
+            });
+        });
+
+    </script>
 {% endblock %}

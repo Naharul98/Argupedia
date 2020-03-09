@@ -43,12 +43,6 @@
                             </div>
                             {% for scheme in schemes %}
                                 <div class="row justify-content-center">
-                                    {% comment %}
-                                        <a href="{% url 'counter-post-view' pk_scheme=scheme.pk pk_post=entry.id %}" class="btn btn-dark btn-lg active mb-2">
-                                            {{ scheme.scheme_name }}
-                                        </a>
-                                    {% endcomment %}
-
                                     <a href="#" class="btn btn-dark btn-lg active mb-2" id="btn{{scheme.pk}}">
                                         {{ scheme.scheme_name }}
                                     </a>
