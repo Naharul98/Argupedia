@@ -18,7 +18,7 @@
                 {% if user.is_authenticated %}
                     <div class="col-lg-4 text-right">
                         <div class="btn-group">
-                            <a href="{% url 'choose-scheme-view' pk_post=0 %}" class="btn btn-dark btn-md active">Create a Debate Topic</a>
+                            <a href="{% url 'choose-scheme-view' pk_post=0 %}" class="btn btn-outline-dark">Create a Debate Topic</a>
                         </div>
                     </div>
                 {% endif %}
@@ -65,7 +65,7 @@
             <a href="?page={{ entries.previous_page_number }}" class="btn btn-sm btn-outline-dark">Previous</a>
         {% endif %}
 
-        <span class="current"><em>Page {{ entries.number }} of {{ entries.paginator.num_pages }}.</em></span>
+        <span class="current"><em>Page {{ entries.number }} of {{ entries.paginator.num_pages }}</em></span>
 
         {% if entries.has_next %}
             <a href="?page={{ entries.next_page_number }}" class="btn btn-sm btn-outline-dark">Next</a>

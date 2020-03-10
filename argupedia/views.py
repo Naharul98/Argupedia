@@ -38,7 +38,7 @@ class PostsDetailView(View):
         root_nodes = subtree.get_descendants(include_self=True)
         root_nodes = root_nodes.annotate(overall_votes=(Count("upvotes") - Count("downvotes")))
         return render(request, "post_detail.html", {"entries": root_nodes, "title" : title, "root_post_id" : pk_post, "is_parent": (subtree.parent == None)})
-
+'''
 class MyDiscussionsView(DetailView):
     model = User
     template_name = 'home.html'
@@ -70,6 +70,24 @@ class MyDiscussionsView(DetailView):
                 last_discussions.append(node)
         context["entries"] = last_discussions
         return context
+'''
+
+class MyDiscussionsView(View):
+    def get(self, request, username):
+        root_nodes = Entry.objects.root_nodes()
+        root_nodes = root_nodes.filter(user=request.user)
+        root_nodes = root_nodes.annotate(overall_votes=(Count("upvotes") - Count("downvotes"))).order_by("-created_date")
+
+        page = request.GET.get('page', 1)
+        paginator = Paginator(root_nodes, 5)
+        try:
+            queryset = paginator.page(page)
+        except PageNotAnInteger:
+            queryset = paginator.page(1)
+        except EmptyPage:
+            queryset = paginator.page(paginator.num_pages)
+
+        return render(request, "home.html", {"entries": queryset})
 
 class ChooseSchemeView(View):
     def get(self, request, pk_post):
