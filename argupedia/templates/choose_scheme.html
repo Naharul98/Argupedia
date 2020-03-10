@@ -8,7 +8,7 @@
             </div>
             {% for scheme in schemes %}
                 <div class="row justify-content-center">
-                    <a href="{% url 'create-post-view' pk_scheme=scheme.pk %}" class="btn btn-dark btn-lg active mb-2">{{ scheme.scheme_name }}</a>
+                    <a href="{% url 'create-post-view' pk_scheme=scheme.pk %}" class="btn btn-lg btn-outline-dark mb-2">{{ scheme.scheme_name }}</a>
                 </div>
             {% endfor %}
         </div>
@@ -28,7 +28,7 @@
 
                     <div class="container center_div">
                         <h4 style="margin-bottom: 15px; margin-top: 10px;text-align: center;">Counter Argument</h4>
-                        <label for="text"><strong>Critique Position:</strong></label>
+                        <label for="text" style="margin-left: 15px"><strong>Critique Position:</strong></label>
                         <div class="col-md-12">
                             <select class="form-control" id="critique" name="critique" required onchange="configureVisibility();appendLinks();">
                                 <option value="">Select</option>
@@ -43,7 +43,7 @@
                             </div>
                             {% for scheme in schemes %}
                                 <div class="row justify-content-center">
-                                    <a href="#" class="btn btn-dark btn-lg active mb-2" id="btn{{scheme.pk}}">
+                                    <a href="#" class="btn btn-outline-dark btn-lg mb-2" id="btn{{scheme.pk}}">
                                         {{ scheme.scheme_name }}
                                     </a>
                                 </div>
@@ -51,8 +51,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
 
