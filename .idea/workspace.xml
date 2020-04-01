@@ -50,9 +50,9 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../pacman-cw/pacman-cw" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -161,6 +161,15 @@
       <workItem from="1583766621451" duration="8356000" />
       <workItem from="1583785575904" duration="4103000" />
       <workItem from="1583795054361" duration="6393000" />
+      <workItem from="1584368089718" duration="3000" />
+      <workItem from="1584484595210" duration="894000" />
+      <workItem from="1584572048616" duration="192000" />
+      <workItem from="1585065694184" duration="2272000" />
+      <workItem from="1585075968449" duration="626000" />
+      <workItem from="1585155807891" duration="1534000" />
+      <workItem from="1585312228471" duration="4375000" />
+      <workItem from="1585355926596" duration="105000" />
+      <workItem from="1585679149153" duration="4700000" />
     </task>
     <servers />
   </component>
