@@ -174,10 +174,9 @@ class VisualizeView(View):
     def get(self, request, pk_post):
         subtree = Entry.objects.get(pk=pk_post)
         root_nodes = subtree.get_descendants(include_self=True)
-        set_in = set()
-        set_out = set()
-        set_undec = set()
-
+        set_in = set() #set in
+        set_out = set() #set out
+        set_undec = set() #set undecidable
         for entry in root_nodes:
             if (entry.has_children == False and entry.is_root_node() == False):
                 if (entry.critical_question.is_attack_on_conclusion == False):
@@ -205,7 +204,7 @@ class VisualizeView(View):
                         set_out.add(entry.pk)
             if(prev_set_in == set_in and prev_set_out == set_out):
                 break
-        for entry in root_nodes:
+        for entry in root_nodes: #append unlabelled sets to set undecidable
             if entry.pk not in set_in and entry.pk not in set_out:
                 set_undec.add(entry.pk)
         #print(set_in)
