@@ -52,7 +52,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -179,7 +179,10 @@
       <workItem from="1586876976973" duration="132000" />
       <workItem from="1587309658438" duration="602000" />
       <workItem from="1587310862609" duration="19000" />
-      <workItem from="1587310921931" duration="556000" />
+      <workItem from="1587310921931" duration="692000" />
+      <workItem from="1587328927918" duration="1803000" />
+      <workItem from="1587330896329" duration="85000" />
+      <workItem from="1587331071933" duration="2267000" />
     </task>
     <servers />
   </component>

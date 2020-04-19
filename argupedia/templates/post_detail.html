@@ -55,9 +55,11 @@
                     {% endif %}
                     <small><em>{{node.created_date}}</em></small>
                     <a href="{% url 'choose-scheme-view' node.pk %}" class="answerButton" value="{{node.pk}}" style="font-size: 12px">counter</a>
+{% comment %}...
                     {% if node.user.pk == user.pk and not node.deleted %}
-                        <a href="{% url 'posts-delete' node.pk %}" class="deleteButton" value="{{node.pk}}" style="font-size: 12px; color: red;">delete</a>
+                        <a href="{% url 'posts-delete' node.pk %}" class="deleteButton" value="{{node.pk}}" style="font-size: 12px; color: red; visibility: none;">delete</a>
                     {% endif %}
+{% endcomment %}
                 {% endif %}
             </p>
             <div id="content{{node.pk}}" class="entry-content {% if node.deleted %}deleted text-muted{% endif %}" value="{{node.pk}}" style="{% if entry.pk == node.pk %}background-color: yellow;{% endif %}">{{node.content_formatted|safe }}</div>
