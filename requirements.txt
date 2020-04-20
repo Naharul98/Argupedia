@@ -1,0 +1,10 @@
+bleach==3.0.2
+bleach-whitelist==0.0.9
+Django==2.2.7
+django-js-asset==1.2.2
+django-mptt==0.9.1
+Markdown==3.0.1
+pytz==2019.3
+six==1.13.0
+sqlparse==0.3.0
+webencodings==0.5.1
