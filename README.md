@@ -2,6 +2,17 @@
  
 An online debate platform which alllows visualization of debates in the form of directed graph and automatically labels arguments as Winning/Losing/Undecided in a given state of the debate
 
+### Features
+
+- Implements [Grounded Extension Algorithm](https://nms.kcl.ac.uk/sanjay.modgil/inf/ProofTheories_and_Algorithms.pdf) to label arguments according to their current position (Winning/Losing/Undecidable)
+- Visualizes debates in the form of an interactive directed graph
+    - Nodes represent individual arguments in the debate
+    - Edges in the graph reflect their attack relation (Which argument is challenging which)
+    - Nodes are highlighted according to their labelling by the algorithm (Winning: Green, Losing: Red, Undecidable: Grey)
+    - Hover over nodes to view the argument
+    - Hover over edges to view the argument structure used
+- A range of [Argumentation Schemes](https://www.reasoninglab.com/patterns-of-argument/argumentation-schemes/waltons-argumentation-schemes/) to choose from to allow people engaging in debates to make their arguments more clear and concise.
+
 ### Instructions for Running the Project
 ```
 • Activate virtual environment
@@ -13,17 +24,6 @@ If website runs into issues, reinstall the dependencies after activating virtual
 
 > pip install -r requirements.txt
 ```
-
-### Features
-
-- Implements [Grounded Extension Algorithm](https://nms.kcl.ac.uk/sanjay.modgil/inf/ProofTheories_and_Algorithms.pdf) to label arguments according to their current position (Winning/Losing/Undecidable)
-- Visualizes debates in the form of an interactive directed graph
-    - Nodes represent individual arguments in the debate
-    - Edges in the graph reflect their attack relation (Which argument is challenging which)
-    - Nodes are highlighted according to their labelling by the algorithm (Winning: Green, Losing: Red, Undecidable: Grey)
-    - Hover over nodes to view the argument
-    - Hover over edges to view the argument structure used
-- A range of [Argumentation Schemes](https://www.reasoninglab.com/patterns-of-argument/argumentation-schemes/waltons-argumentation-schemes/) to choose from to allow people engaging in debates to make their arguments more clear and concise.
 
 ### Libraries Used
 - [Django - 2.2.7](https://www.djangoproject.com)
