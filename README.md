@@ -4,7 +4,6 @@ An online debate platform which alllows visualization of debates in the form of 
 
 ### Instructions for Running the Project
 ```
-• Extract the project.
 • Navigate to the path of the project using command prompt:
 	> cd <project location>
 • Navigate to the scripts folder using command prompt:
@@ -17,4 +16,7 @@ An online debate platform which alllows visualization of debates in the form of 
 • Run the following command:
 	> python manage.py runserver
 • This will start the web-server. A URL will be displayed in the command prompt. Copy the URL into a browser to access the website.
+Note: 
+If website runs into issues, reinstall the dependencies after activating virtual environment, by executing the following command:
+> pip install -r requirements.txt
 ```
