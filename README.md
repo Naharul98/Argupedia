@@ -4,14 +4,7 @@ An online debate platform which alllows visualization of debates in the form of 
 
 ### Instructions for Running the Project
 ```
-• Navigate to the path of the project using command prompt:
-	> cd <project location>
-• Navigate to the scripts folder using command prompt:
-	> cd Scripts
-• Activate virtual environment:
-	> activate.bat (for windows)
-• Back out of the folder into the root folder:
-	> cd ..
+• Activate virtual environment
 • Run the following command:
 	> python manage.py runserver
 • This will start the web-server. A URL will be displayed in the command prompt. Copy the URL into a browser to access the website.
