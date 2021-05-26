@@ -4,6 +4,8 @@ An online debate platform which alllows visualization of debates in the form of 
 
 ![Screenshot](https://github.com/Naharul98/Argupedia/blob/master/screenshot.jpg?raw=true)
 
+![Screenshot2](https://github.com/Naharul98/Argupedia/blob/master/screenshot2.jpg?raw=true)
+
 ### Features
 
 - Implements [Grounded Extension Algorithm](https://nms.kcl.ac.uk/sanjay.modgil/inf/ProofTheories_and_Algorithms.pdf) to label arguments according to their current position (Winning/Losing/Undecidable)
