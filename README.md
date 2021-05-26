@@ -2,6 +2,8 @@
  
 An online debate platform which alllows visualization of debates in the form of directed graph and automatically labels arguments as Winning/Losing/Undecided in a given state of the debate
 
+![Evaluating different values of discount factor](https://github.com/Naharul98/Pacman-AI-agent-for-stochastic-environment/blob/master/Discount_Factor_Evaluation_Chart.jpg?raw=true)
+
 ### Features
 
 - Implements [Grounded Extension Algorithm](https://nms.kcl.ac.uk/sanjay.modgil/inf/ProofTheories_and_Algorithms.pdf) to label arguments according to their current position (Winning/Losing/Undecidable)
