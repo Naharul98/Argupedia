@@ -2,7 +2,7 @@
  
 An online debate platform which alllows visualization of debates in the form of directed graph and automatically labels arguments as Winning/Losing/Undecided in a given state of the debate
 
-![Evaluating different values of discount factor](https://github.com/Naharul98/Pacman-AI-agent-for-stochastic-environment/blob/master/Discount_Factor_Evaluation_Chart.jpg?raw=true)
+![Screenshot](https://github.com/Naharul98/Argupedia/blob/master/screenshot.jpg?raw=true)
 
 ### Features
 
