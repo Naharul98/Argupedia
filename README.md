@@ -2,6 +2,12 @@
  
 An online debate platform which alllows visualization of debates in the form of directed graph and automatically labels arguments as Winning/Losing/Undecided in a given state of the debate
 
+## Inspiration from Research Journals
+The project was inspired by the following academic journals:
+> [Journal 1](https://nms.kcl.ac.uk/sanjay.modgil/inf/ProofTheories_and_Algorithms.pdf)
+> [Journal 2](https://www.sciencedirect.com/science/article/pii/S0004370213001161)
+> [Journal 3](https://link.springer.com/chapter/10.1007/978-3-540-75526-5_4)
+
 ![Screenshot](https://github.com/Naharul98/Argupedia/blob/master/screenshot.jpg?raw=true)
 
 ![Screenshot2](https://github.com/Naharul98/Argupedia/blob/master/screenshot2.jpg?raw=true)
